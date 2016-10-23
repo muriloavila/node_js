@@ -32,7 +32,14 @@ module.exports = function(app){
 		var erros = request.validationErrors();
 
 		if(erros){
-			response.render('produtos/form', {errosValidacao: erros, produto:produto});
+			response.format({
+				html: function(){
+						response.status(400).render('produtos/form', {errosValidacao: erros, produto:produto});
+					},
+				json: function(){
+						response.status(400).json(erros);
+					}
+			});
 			return;
 		}
 
